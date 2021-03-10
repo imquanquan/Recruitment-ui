@@ -4,6 +4,11 @@ import router from './router'
 import './plugins/element.js'
 import './assets/fonts/iconfont/iconfont.css'
 
+import axios from 'axios'
+Vue.prototype.$http = axios
+
+// 请求根路径
+axios.defaults.baseURL = 'http://127.0.0.1:8001/'
 Vue.config.productionTip = false
 
 new Vue({

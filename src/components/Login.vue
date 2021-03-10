@@ -5,18 +5,18 @@
       <div class="avatar_box">
       </div>
       <!-- 登陆表单 -->
-      <el-form :model="loginForm" label-width="0px" class="login_form">
+      <el-form ref="loginFormRef" :rules="loginFormRules" :model="loginForm" label-width="0px" class="login_form">
         <!-- email -->
-        <el-form-item>
+        <el-form-item prop="email">
           <el-input v-model="loginForm.email" prefix-icon="icon iconfont icon-bianzubeifen"></el-input>
         </el-form-item>
         <!-- 密码 -->
-        <el-form-item>
+        <el-form-item prop="password">
           <el-input v-model="loginForm.password" type="password" prefix-icon="icon iconfont icon-bianzubeifen4"></el-input>
         </el-form-item>
         <!-- 按钮区域 -->
         <el-form-item class="button">
-          <el-button type="primary">登陆</el-button>
+          <el-button type="primary" @click="login">登陆</el-button>
           <el-button>注册</el-button>
         </el-form-item>
       </el-form>
@@ -30,9 +30,36 @@ export default {
     return {
       // 登陆数据
       loginForm: {
-        email: 'sss',
-        password: 'sss',
+        email: 'imquanquan11@gmail.com',
+        password: 'zxcvqwer1234',
+      },
+      // 登陆表单验证规则
+      loginFormRules: {
+        email: [
+          { required: true, message: '请输入登陆邮箱', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' }
+        ]
       }
+    }
+  },
+  methods: {
+    // 登陆方法
+    login() {
+      this.$refs.loginFormRef.validate(async valid => {
+        if (!valid) return;
+        this.$http.post('rest-auth/login/', this.loginForm)
+        .then(response => { 
+	        this.$message.success('登陆成功');
+          console.log(response.data);
+          window.sessionStorage.setItem("token", response.data.key);
+          this.$router.push('/home');
+        })
+        .catch(error => {
+          this.$message.error('登陆失败');
+        });
+      });
     }
   }
 };
