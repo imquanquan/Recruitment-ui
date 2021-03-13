@@ -40,16 +40,16 @@
     <el-container>
       <el-main>
         <el-row :gutter="12">
-          <el-card class="job_card" shadow="hover">
+          <el-card :body-style="{ padding: '0px' }" class="job_card" shadow="hover">
             <div class="job_card_div">
               <div class="job">
                 <div class="j_top">
                   <el-link class="j_name" type="primary">苦力[广州天河]</el-link>
-                  <span class="release_time">8月1日</span>
+                  <span class="format-time">8月1日</span>
                 </div>
                 <div class="j_bot">
                   <span class="salary">15k-20k</span>
-                  <span>经验 2-3 年/本科</span>
+                  <span class="req">经验 2-3 年/本科</span>
                 </div>
               </div>
               <div class="company">
@@ -60,9 +60,12 @@
                   <span class="c_detail">B轮/100-500人</span>
                 </div>
               </div>  
-              <div class="c_log">
-                test
+              <div class="c_logo">
+                <img src="../assets/scau.jpeg" alt="">
               </div>            
+            </div>
+            <div class="list_item_bot">
+              "五险一金、餐补、下午茶、双休"
             </div>
           </el-card>
         </el-row>       
@@ -135,12 +138,69 @@ export default {
   height: 100%;
 }
 
-.job_card{
+.job_card {
   width: 70%;
 }
 
 .job_card_div {
   display: flex;
+  padding: 20px;
   justify-content: space-between;
+}
+
+.j_top {
+  line-height: 34px;
+  display: inline-block;
+}
+
+.j_name {
+  font-size: 18px;
+}
+
+.format-time {
+  font-size: 16px;
+  color: #A0CFFF;
+  margin-left: 10px;
+  vertical-align:bottom;
+}
+
+.j_bot {
+  line-height: 24px;
+  font-size: 16px;
+}
+
+.salary {
+  color: #FD5F39;
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+.req {
+  font-size: 16px;
+}
+
+.c_top {
+  line-height: 34px;
+  display: inline-block;
+}
+
+.c_name {
+  font-size: 18px;
+  >span {
+    font-size: 16px;
+  }
+}
+
+.c_logo img {
+  width: 50px;
+  height: 50px;
+}
+
+.list_item_bot{
+  height: 10px;
+  line-height: 10px;
+  font-size: 14px;
+  background: #ECF5FF;
+  padding: 20px;
 }
 </style>
