@@ -8,7 +8,7 @@ import axios from 'axios'
 Vue.prototype.$http = axios
 
 // 请求根路径
-axios.defaults.baseURL = 'http://127.0.0.1:8001/'
+axios.defaults.baseURL = 'http://127.0.0.1:8002/'
 Vue.config.productionTip = false
 
 new Vue({
