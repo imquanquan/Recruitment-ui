@@ -39,33 +39,33 @@
     <!-- 主体区域 -->
     <el-container>
       <el-main>
-        <el-row :gutter="12">
+        <el-row :gutter="12" v-for="job in jobs" :key='job.id'>
           <el-card :body-style="{ padding: '0px' }" class="job_card" shadow="hover">
             <div class="job_card_div">
               <div class="job">
                 <div class="j_top">
-                  <el-link class="j_name" type="primary">苦力[广州天河]</el-link>
-                  <span class="format-time">8月1日</span>
+                  <el-link class="j_name" type="primary">{{ job.job_name }}[{{ job.company_detail.address }}]</el-link>
+                  <span class="format-time">{{ job.deliver_date }}</span>
                 </div>
                 <div class="j_bot">
-                  <span class="salary">15k-20k</span>
-                  <span class="req">经验 2-3 年/本科</span>
+                  <span class="salary">{{ job.salary }}</span>
+                  <span class="req">{{ job.experience }}/{{ job.education }}</span>
                 </div>
               </div>
               <div class="company">
                 <div class="c_top">
-                  <el-link class="c_name" type="primary">华南农业大学</el-link>
+                  <el-link class="c_name" type="primary">{{ job.company_detail.companyname }}</el-link>
                 </div>
                 <div class="c_bot">
-                  <span class="c_detail">B轮/100-500人</span>
+                  <span class="c_detail">{{ job.company_detail.financing }}/{{ job.company_detail.scale }}</span>
                 </div>
               </div>  
               <div class="c_logo">
-                <img src="../assets/scau.jpeg" alt="">
+                <img :src="require('../assets/scau.jpeg')" alt="">
               </div>            
             </div>
             <div class="list_item_bot">
-              "五险一金、餐补、下午茶、双休"
+              {{ job.welfare }}
             </div>
           </el-card>
         </el-row>       
@@ -76,12 +76,27 @@
 
 <script>
 export default {
-    methods: {
-      logout() {
-        window.sessionStorage.clear()
-        this.$router.push('/login')
-      }
+  data () {
+    return {
+      jobs: null
     }
+  },
+  created () {
+    this.list_job()
+  },
+  methods: {
+    logout() {
+      window.sessionStorage.clear()
+      this.$router.push('/login')
+    },
+    async list_job() {
+      this.$http.get('api/job')
+      .then(response => {
+          this.jobs = response.data;
+        }
+      )
+    }
+  }
 };
 </script>
 
@@ -136,6 +151,10 @@ export default {
 
 .home-container {
   height: 100%;
+}
+
+.el-row {
+  margin: 35px;
 }
 
 .job_card {

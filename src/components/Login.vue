@@ -52,7 +52,6 @@ export default {
         this.$http.post('rest-auth/login/', this.loginForm)
         .then(response => { 
 	        this.$message.success('登陆成功');
-          console.log(response.data);
           window.sessionStorage.setItem("token", response.data.key);
           this.$router.push('/jobhunter/home');
         })
