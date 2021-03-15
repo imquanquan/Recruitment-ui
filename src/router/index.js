@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../components/Login.vue'
 import JobHunterHome from '../components/JobHunterHome.vue'
+import JobDetail from '../components/JobDetail.vue'
+import CompanyDetail from '../components/CompanyDetail.vue'
 import '../assets/css/global.css'
 
 Vue.use(VueRouter)
@@ -9,7 +11,9 @@ Vue.use(VueRouter)
 const routes = [
   { path: '/', redirect: 'login' },
   { path: '/login', component: Login },
-  { path: '/jobhunter/home', component: JobHunterHome }
+  { path: '/jobhunter/home', component: JobHunterHome },
+  { path: '/companys/:id', component: CompanyDetail },
+  { path: '/jobs/:id', component: JobDetail }
 ]
 
 const router = new VueRouter({

@@ -38,38 +38,7 @@
     </el-header>
     <!-- 主体区域 -->
     <el-container>
-      <el-main>
-        <el-row :gutter="12" v-for="job in jobs" :key='job.id'>
-          <el-card :body-style="{ padding: '0px' }" class="job_card" shadow="hover">
-            <div class="job_card_div">
-              <div class="job">
-                <div class="j_top">
-                  <el-link :href="'#/jobs/' + job.id" class="j_name" type="primary">{{ job.job_name }}[{{ job.company_detail.address }}]</el-link>
-                  <span class="format-time">{{ job.deliver_date }}</span>
-                </div>
-                <div class="j_bot">
-                  <span class="salary">{{ job.salary }}</span>
-                  <span class="req">{{ job.experience }}/{{ job.education }}</span>
-                </div>
-              </div>
-              <div class="company">
-                <div class="c_top">
-                  <el-link :href="'#/companys/' + job.company_id " class="c_name" type="primary">{{ job.company_detail.companyname }}</el-link>
-                </div>
-                <div class="c_bot">
-                  <span class="c_detail">{{ job.company_detail.financing }}/{{ job.company_detail.scale }}</span>
-                </div>
-              </div>  
-              <div class="c_logo">
-                <img :src="require('../assets/scau.jpeg')" alt="">
-              </div>            
-            </div>
-            <div class="list_item_bot">
-              {{ job.welfare }}
-            </div>
-          </el-card>
-        </el-row>       
-      </el-main>
+      Company Detail
     </el-container>
   </el-container>
 </template>
@@ -88,16 +57,9 @@ export default {
     logout() {
       window.sessionStorage.clear()
       this.$router.push('/login')
-    },
-    async list_job() {
-      this.$http.get('api/job')
-      .then(response => {
-          this.jobs = response.data;
-        }
-      )
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -153,73 +115,4 @@ export default {
   height: 100%;
 }
 
-.el-row {
-  margin: 35px;
-}
-
-.job_card {
-  width: 70%;
-}
-
-.job_card_div {
-  display: flex;
-  padding: 20px;
-  justify-content: space-between;
-}
-
-.j_top {
-  line-height: 34px;
-  display: inline-block;
-}
-
-.j_name {
-  font-size: 18px;
-}
-
-.format-time {
-  font-size: 16px;
-  color: #A0CFFF;
-  margin-left: 10px;
-  vertical-align:bottom;
-}
-
-.j_bot {
-  line-height: 24px;
-  font-size: 16px;
-}
-
-.salary {
-  color: #FD5F39;
-  margin-right: 10px;
-  font-size: 18px;
-}
-
-.req {
-  font-size: 16px;
-}
-
-.c_top {
-  line-height: 34px;
-  display: inline-block;
-}
-
-.c_name {
-  font-size: 18px;
-  >span {
-    font-size: 16px;
-  }
-}
-
-.c_logo img {
-  width: 50px;
-  height: 50px;
-}
-
-.list_item_bot{
-  height: 10px;
-  line-height: 10px;
-  font-size: 14px;
-  background: #ECF5FF;
-  padding: 20px;
-}
 </style>
