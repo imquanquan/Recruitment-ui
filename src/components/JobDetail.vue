@@ -42,17 +42,17 @@
         <div class="position-content clearfix">
           <div class="position-content-l">
             <div direction="vertical" class="job-name">
-              <h4 class="company">华南农业大学</h4>
-              <h1 class="name">JAVA 工程师</h1>
+              <h4 class="company">{{ job.company_detail.companyname }}</h4>
+              <h1 class="name">{{ job.job_name }} </h1>
             </div>
             <div class="job_request">
               <div class="job_request">
-                <span class="salary">0-2k /</span>
-                <span>广州天河 /</span>
-                <span>经验3-5年 /</span>
-                <span>本科</span>
+                <span class="salary">{{ job.salary }} /</span>
+                <span>{{ job.company_detail.address }} /</span>
+                <span>{{ job.experience }} /</span>
+                <span>{{ job.education }}</span>
               </div>
-              <div class="publish_time">17:46  发布</div>
+              <div class="publish_time">{{ job.deliver_date }}  发布</div>
             </div>
           </div>
           <div class="position-content-r">
@@ -79,22 +79,57 @@
           <dl class="job-detail">
             <dd>
               <h3>职位诱惑：</h3>
-              <p>多次调薪、年底双薪、加班补助、社保</p>
+              <p>{{ job.welfare }}</p>
             </dd>
             <dd>
               <h3>职位描述：</h3>
-岗位职责：
-<br>
-1、参与业务需求评审分析，撰写开发文档，在规定时间内把产品设计转化为代码实现；
-<br>
-2、中级：担任开发团队的开发骨干，指导初级开发人员进行代码开发，主导高可用/高性能/可扩展的模块设计和编码工作。
-<br>
-3、高级：担任开发团队的技术骨干，指导初级开发人员进行代码开发，主导高可用/高性能/可扩展的模块设计和编码工作，代码review。
+              {{ job.description }}
+            </dd>
+            <dd>
+              <h3>工作地址：</h3>
+              <p>{{ job.company_detail.address }}</p>
             </dd>
           </dl>
         </el-main>
-        <el-aside>
-          侧边
+        <el-aside class="content_r">
+          <dl class="job_compay">
+            <dt>
+              <a href="">
+                <img class="b2" :src="require('../assets/scau.jpeg')" alt="" width="96" height="96">
+                <span class="job_company_name">{{ job.company_detail.companyname }}</span>
+              </a>
+            </dt>
+          </dl>
+          <ul class="c_feature">
+              <li>
+                <h4>{{ job.company_detail.financing }}</h4>
+              </li>
+              <li>
+                <h4>{{ job.company_detail.scale }}</h4>
+              </li>
+          </ul>
+          <div class="jobs">
+            <div class="jobs_header">
+              <h4>其他职位</h4>
+              <el-divider></el-divider>
+            </div>
+            <el-row :gutter="12" v-for="job in jobs" :key='job.id'>
+              <a href="">
+                <el-card :body-style="{ padding: '0px' }" class="job_card" shadow="hover">
+                  <div class="similar_job_detail">
+                    <div class="similar_list_item_logo"> 
+                      <img class="b2" :src="require('../assets/scau.jpeg')" alt="" width="56" height="56">
+                    </div>
+                    <div class="similar_list_item_pos">
+                      <span>Java 工程师</span>
+                      <p class="similar_salary">10k-12k</p>
+                      <p class="similar_company_name">兴业数金 [广州·天河区]</p>
+                  </div>
+                  </div>
+                </el-card>
+              </a>
+            </el-row>
+          </div>
         </el-aside>
       </el-container>
     </el-main>
@@ -105,15 +140,52 @@
 export default {
   data () {
     return {
-      radio: 3
+      job: {
+          "id": 9, 
+          "job_name": "苦力1", 
+          "description": "博士苦力1", 
+          "salary": "2k-5k", 
+          "education": "博士", 
+          "welfare": "五险一金、餐补、下午茶、双休", 
+          "experience": "在校/应届", 
+          "deliver_date": "2021-03-13", 
+          "company_id": 1, 
+          "company_detail": {
+              "id": 1, 
+              "address": "广州天河", 
+              "companyname": "imquanquan", 
+              "scale": "少于 15 人", 
+              "financing": "未融资", 
+              "logo": "../assets/scau.jpeg"
+          }
+      },
+      radio: 3,
+      jobs: null
     }
   },
   created () {
+    this.get_job();
+    this.list_job()
   },
   methods: {
     logout() {
       window.sessionStorage.clear()
       this.$router.push('/login')
+    },
+    async get_job() {
+      this.$http.get('api/job/' + this.$route.params.id)
+      .then(response => {
+          this.job = response.data;
+          console.log(this.job)
+        }
+      )
+    },
+    async list_job() {
+      this.$http.get('api/job')
+      .then(response => {
+          this.jobs = response.data;
+        }
+      )
     }
   }
 }
@@ -197,7 +269,7 @@ export default {
 }
 
 .position-head .position-content .position-content-l {
-    width: 90%;
+    width: 95%;
 }
 
 .position-head .position-content .position-content-l .job-name {
@@ -253,11 +325,45 @@ export default {
     justify-content: space-between;
     width: 1024px;
     margin: 0 auto;
+    background-color: #f2f5f4;
+    height: 100%;
 }
 
 .content_l {
-  padding-top: 4%;
+  padding-top: 2%;
   padding-right: 6%;
+  margin-right: 5px; 
+  background-color: #fff;
+}
+
+.content_r {
+  padding-top: 2%;
+  padding-left: 4%;
+  margin-left: 5px; 
+  background-color: #fff;
+}
+
+
+.c_feature li {
+    position: relative;
+    margin: 0 0 16px;
+    color: #737373;
+    line-height: 25px;
+}
+
+.similar_salary {
+  color: #FD5F39;
+  margin: 0;
+}
+
+.similar_company_name {
+    width: 167px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 12px;
+    color: #999;
+    margin: 0;
 }
 
 h1 {
@@ -283,8 +389,58 @@ h4 {
   color: #FD5F39;
 }
 
+.home-container {
+    color: #A0CFFF;
+}
+
 dl, dt, dd {
     margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+dl {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+.similar_job_detail {
+  display: flex;
+}
+
+.job_company_name {
+  margin: 10px;
+  margin-bottom: 20px;
+  font-size: 22px;
+  line-height: 22px;
+}
+
+.job_company>dt {
+    position: relative;
+    padding-bottom: 25px;
+    margin-bottom: -10px;
+}
+
+.job_company dt div {
+    position: absolute;
+    left: 90px;
+    bottom: 5px;
+    padding: 20px 0;
+}
+
+.b2 {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+  margin-right: 15px;
+}
+
+.similar_job_detail {
+  margin-block: 10px;
+  margin-top: 10px;
 }
 
 .clearfix:before, .clearfix:after {
